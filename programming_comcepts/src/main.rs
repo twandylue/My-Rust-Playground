@@ -1,20 +1,16 @@
 fn main() {
-    let x = value(Coin::Nickel);
-    println!("{:#?}", x);
-}
+    let config_max: Option<i8> = None;
+    // let config_max = Some(3u8);
 
-enum Coin {
-    Penny,
-    Nickel,
-    Dime,
-    Quarter,
-}
+    if let Some(max) = config_max {
+        println!("{}", max)
+    } else {
+        ()
+    }
 
-fn value(coin: Coin) -> u32 {
-    match coin {
-        Coin::Penny => 1, 
-        Coin::Dime => 10,
-        Coin::Nickel => 5,
-        Coin::Quarter => 25,
+    match config_max {
+        Some(x) => println!("{}", x),
+        _ => (),
     }
 }
+
