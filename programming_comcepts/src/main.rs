@@ -1,16 +1,12 @@
 fn main() {
-    let config_max: Option<i8> = None;
-    // let config_max = Some(3u8);
+    let number = generate_fibonacci_sequence(40);
+    println!("{}", number);
+}
 
-    if let Some(max) = config_max {
-        println!("{}", max)
-    } else {
-        ()
-    }
-
-    match config_max {
-        Some(x) => println!("{}", x),
-        _ => (),
+fn generate_fibonacci_sequence(depth: i32) -> i32 {
+    if depth <= 1 { depth }
+    else {
+        generate_fibonacci_sequence(depth-1) + generate_fibonacci_sequence(depth-2)
     }
 }
 
