@@ -1,6 +1,6 @@
 fn main() {
     let number_1 = generate_fibonacci_sequence(30);
-    let number_2 = generate_fibonacci_sequence_Recursion(30);
+    let number_2 = generate_fibonacci_sequence_recursion(30);
     assert_eq!(number_1, number_2);
     println!("Number_1: {}, Number_2: {}", number_1, number_2);
 }
@@ -18,9 +18,9 @@ fn generate_fibonacci_sequence(depth: i64) -> i64 {
     return a
 }
 
-fn generate_fibonacci_sequence_Recursion(depth: i64) -> i64 {
+fn generate_fibonacci_sequence_recursion(depth: i64) -> i64 {
     if depth <= 1 {depth}
     else {
-        generate_fibonacci_sequence_Recursion(depth-1) + generate_fibonacci_sequence_Recursion(depth-2)
+        generate_fibonacci_sequence_recursion(depth-1) + generate_fibonacci_sequence_recursion(depth-2)
     }
 }
