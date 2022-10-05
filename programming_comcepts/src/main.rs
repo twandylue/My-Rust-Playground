@@ -1,21 +1,29 @@
 fn main() {
-    use std::collections::HashMap;
-    let mut map = HashMap::new();
+    let words: Vec<String> = vec![
+        String::from("first"),
+        String::from("apple"),
+        String::from("andy"),
+    ];
+    let vowels: Vec<char> = vec!['a', 'e', 'i', 'o', 'u'];
 
-    let v = vec![1, 2, 3, 4, 4, 4, 4, 5, 5, 2, 2, 3, 3, 4];
+    for mut word in words {
+        let first_letter = match word.chars().nth(0) {
+            None => panic!(),
+            Some(first) => first,
+        };
 
-    for number in v {
-        let count = map.entry(number).or_insert(0);
-        *count += 1;
-    }
-
-    let mut max_count: u32 = 0;
-    for (_, v) in &map {
-        if max_count < *v {
-            max_count = *v
+        let mut result: bool = false;
+        for vowel in &vowels {
+            if first_letter == *vowel {
+                word.push_str("-hay");
+                result = true;
+            }
         }
-    }
 
-    println!("{:#?}", map);
-    println!("{:#?}", max_count)
+        if !result {
+            word = format!("{}-{}ay", &word[1..], first_letter);
+        }
+
+        println!("{:#?}", word);
+    }
 }
