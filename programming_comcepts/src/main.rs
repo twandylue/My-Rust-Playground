@@ -1,28 +1,11 @@
 fn main() {
-    let rect = Rectangle::square(10);
-    let area = Rectangle::area(&rect, &rect);
+    use std::collections::HashMap;
 
-    println!("{:#?}", rect);
+    let field_name = String::from("Favorite color");
+    let field_value = String::from("Blue");
 
-    println!("{}", rect.area(&rect));
-    println!("{}", area);
-}
-
-#[derive(Debug)]
-struct Rectangle {
-    width: u32,
-    height: u32,
-}
-
-impl Rectangle {
-    fn square (size: u32) -> Self {
-        Self {
-            width: size,
-            height: size,
-        }
-    }
-
-    fn area (&self, rect: &Rectangle) -> u32 {
-        rect.height * rect.width
-    }
+    let mut map = HashMap::new();
+    map.insert(field_name, field_value);
+    // field_name and field_value are invalid at this point, try using them and
+    // see what compiler error you get!
 }
