@@ -1,15 +1,19 @@
 fn main() {
     use std::collections::HashMap;
 
-    // let text = String::from("hello world wonderful world") + &"hello";
-    let text = format!("{} {} {}", "test", "test", "test");
+    let mut v:Vec<i32> = vec![];
+    let mut v1:Vec<i32> = vec![3, 2,5,1,23,52,62,643,63,73,4,6,10];
+    v1.sort();
 
-    let mut map = HashMap::new();
-
-    for word in text.split_whitespace() {
-        let count = map.entry(word).or_insert(0);
-        *count += 1;
+    for number in 1..=10 {
+        v.push(number);
     }
 
-    println!("{:?}", map);
+    println!("{:?}", v);
+    println!("{:?}", v[v.len()/2 -1]);
+
+    // TODO: Median
+    println!("{:?}", v1);
+    println!("{:?}", v1[v1.len()/2 -1]);
+
 }
