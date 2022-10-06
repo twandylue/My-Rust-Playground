@@ -1,29 +1,47 @@
+use std::collections::HashMap;
+
 fn main() {
-    let words: Vec<String> = vec![
-        String::from("first"),
-        String::from("apple"),
-        String::from("andy"),
+    let data = vec![
+        ("zeo", "Engineering"),
+        ("andy", "Engineering"),
+        ("leo", "Sales"),
+        ("amy", "Sales"),
+        ("rick", "Engineering"),
     ];
-    let vowels: Vec<char> = vec!['a', 'e', 'i', 'o', 'u'];
 
-    for mut word in words {
-        let first_letter = match word.chars().nth(0) {
-            None => panic!(),
-            Some(first) => first,
-        };
+    let mut map: HashMap<String, Vec<String>> = HashMap::new();
 
-        let mut result: bool = false;
-        for vowel in &vowels {
-            if first_letter == *vowel {
-                word.push_str("-hay");
-                result = true;
-            }
+    for (name, department) in data {
+        let list = map.entry(String::from(department)).or_insert(Vec::new());
+        list.push(String::from(name));
+    }
+
+    // println!("{:#?}", map);
+    println!("Total people: {:#?}", retrive_all_people(&map));
+    println!("{:#?}", retrive_people("Sales", &map));
+    println!("{:#?}", retrive_people("Engineering", &map));
+}
+
+fn retrive_all_people(map: &HashMap<String, Vec<String>>) -> Vec<String> {
+    let mut total: Vec<String> = Vec::new();
+    for (_, list) in map.into_iter() {
+        for name in list {
+            total.push(String::from(name));
         }
+    }
 
-        if !result {
-            word = format!("{}-{}ay", &word[1..], first_letter);
+    total.sort();
+    return total;
+}
+
+fn retrive_people(department: &str, map: &HashMap<String, Vec<String>>) -> Vec<String> {
+    let result = map.get(department);
+    match result {
+        None => panic!(),
+        Some(list) => {
+            let mut v = list.to_vec();
+            v.sort();
+            return v;
         }
-
-        println!("{:#?}", word);
     }
 }
