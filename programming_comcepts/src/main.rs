@@ -9,6 +9,17 @@ fn main() {
         ("rick", "Engineering"),
     ];
 
+    let map = add_people(data);
+    let department = "Sales";
+    println!("Total people: {:#?}", retrive_all_people(&map));
+    println!("---");
+    println!("{}: {:#?}", department, retrive_people(department, &map));
+    println!("---");
+    let department = "Engineering";
+    println!("{}: {:#?}", department, retrive_people("Engineering", &map));
+}
+
+fn add_people(data: Vec<(&str, &str)>) -> HashMap<String, Vec<String>> {
     let mut map: HashMap<String, Vec<String>> = HashMap::new();
 
     for (name, department) in data {
@@ -16,10 +27,7 @@ fn main() {
         list.push(String::from(name));
     }
 
-    // println!("{:#?}", map);
-    println!("Total people: {:#?}", retrive_all_people(&map));
-    println!("{:#?}", retrive_people("Sales", &map));
-    println!("{:#?}", retrive_people("Engineering", &map));
+    return map;
 }
 
 fn retrive_all_people(map: &HashMap<String, Vec<String>>) -> Vec<String> {
@@ -39,9 +47,9 @@ fn retrive_people(department: &str, map: &HashMap<String, Vec<String>>) -> Vec<S
     match result {
         None => panic!(),
         Some(list) => {
-            let mut v = list.to_vec();
-            v.sort();
-            return v;
+            let mut ans = list.to_vec();
+            ans.sort();
+            ans
         }
     }
 }
