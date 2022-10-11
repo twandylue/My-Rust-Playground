@@ -26,9 +26,12 @@ fn main() {
             },
         };
 
+        let input = Guess::new(guess as i32);
+
+
         println!("You guess: {guess}");
 
-        match guess.cmp(&secret_number){
+        match input.value().cmp(&secret_number){
             Ordering::Less => println!("Too small!"),
             Ordering::Greater => println!("Too big!"),
             Ordering::Equal => { 
@@ -36,5 +39,22 @@ fn main() {
                 break;
              }
         }
+    }
+}
+
+pub struct Guess {
+    value: i32,
+}
+
+impl Guess {
+    pub fn new(value: i32) -> Guess {
+        if value < 1 || value > 100 {
+            panic!("Guess value must be between 1 and 100, got {}", value);
+        }
+        Guess { value }
+    }
+
+    pub fn value(&self) -> i32 {
+        self.value
     }
 }
