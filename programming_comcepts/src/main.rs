@@ -1,17 +1,27 @@
 fn main() {
-    let number_list = vec![34, 50, 25, 100, 65];
-
-    println!("The largest number is {}", largest_numb(&number_list));
+    let both_integer = Point {x: 5, y: 10};
+    let both_float = Point {x: 3.0, y: 4.0};
+    println!("{:?}", both_integer.x());
+    println!("{:?}", both_integer);
+    println!("{:?}", both_float.distance_from_origin());
 }
 
-fn largest_numb(list: &Vec<i32>) -> &i32 {
-    let mut largest = &list[0];
+#[derive(Debug)]
+struct Point<T>
+{
+    x: T,
+    y: T,
+}
 
-    for number in list {
-        if largest < number {
-            largest = number; 
-        }
+// By declaring T as a generic type after impl, Rust can identify that the type in the angle brackets in Point is a generic type rather than a concrete type.
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
     }
+}
 
-    return largest; 
+impl Point<f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
 }
