@@ -1,19 +1,17 @@
 fn main() {
-    use std::collections::HashMap;
+    let number_list = vec![34, 50, 25, 100, 65];
 
-    let mut v:Vec<i32> = vec![];
-    let mut v1:Vec<i32> = vec![3, 2,5,1,23,52,62,643,63,73,4,6,10];
-    v1.sort();
+    println!("The largest number is {}", largest_numb(&number_list));
+}
 
-    for number in 1..=10 {
-        v.push(number);
+fn largest_numb(list: &Vec<i32>) -> &i32 {
+    let mut largest = &list[0];
+
+    for number in list {
+        if largest < number {
+            largest = number; 
+        }
     }
 
-    println!("{:?}", v);
-    println!("{:?}", v[v.len()/2 -1]);
-
-    // TODO: Median
-    println!("{:?}", v1);
-    println!("{:?}", v1[v1.len()/2 -1]);
-
+    return largest; 
 }
