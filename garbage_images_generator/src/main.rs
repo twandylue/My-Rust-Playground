@@ -1,11 +1,14 @@
 use std::fs;
 use std::mem;
+use std::str;
 
 const PNG_SIGNATURE: [u8; 8] = [137, 80, 78, 71, 13, 10, 26, 10];
 
 fn main() {
     let file = String::from("test.png");
-    let sig = read_bytes_or_panic(&file, 0, 8);
+    let mut pointer: u32 = 0;
+    let sig = read_bytes_or_panic(&file, pointer, 8);
+    pointer = pointer + 8;
     println!("Signature: ");
     print_bytes(&sig);
     assert!(
@@ -14,7 +17,10 @@ fn main() {
         file
     );
 
-    let lens = read_bytes_or_panic(&file, 8, mem::size_of::<u32>() as u32);
+    let lens = read_bytes_or_panic(&file, pointer, mem::size_of::<u32>() as u32);
+    pointer = pointer + mem::size_of::<u32>() as u32;
+    println!("Length: ");
+    print_bytes(&lens);
     let mut binary = String::from("");
     for i in lens {
         let bin = convert_decimal_to_binary(i);
@@ -24,6 +30,12 @@ fn main() {
 
     let number = convert_binary_to_decimal(String::from(binary));
     println!("Length: {}", number);
+
+    let chunk_type = read_bytes_or_panic(&file, pointer, mem::size_of::<u32>() as u32);
+    pointer = pointer + mem::size_of::<u32>() as u32;
+    println!("Chunk type: ");
+    print_bytes(&chunk_type);
+    println!("Chunk type: {:#?}", str::from_utf8(&chunk_type).unwrap());
 }
 
 fn print_bytes(array: &[u8]) {
