@@ -1,27 +1,43 @@
 fn main() {
-    let both_integer = Point {x: 5, y: 10};
-    let both_float = Point {x: 3.0, y: 4.0};
-    println!("{:?}", both_integer.x());
-    println!("{:?}", both_integer);
-    println!("{:?}", both_float.distance_from_origin());
+    let tweet = Tweet {
+        username: String::from("andy"),
+        content: String::from("test123"),
+        reply: false,
+        retweet: false,
+    };
+
+    println!("{:#?}", tweet.summarize())
 }
 
-#[derive(Debug)]
-struct Point<T>
-{
-    x: T,
-    y: T,
-}
-
-// By declaring T as a generic type after impl, Rust can identify that the type in the angle brackets in Point is a generic type rather than a concrete type.
-impl<T> Point<T> {
-    fn x(&self) -> &T {
-        &self.x
+pub trait Summary {
+    fn summarize(&self) -> String{
+        String::from("(Read more...)")
     }
 }
 
-impl Point<f32> {
-    fn distance_from_origin(&self) -> f32 {
-        (self.x.powi(2) + self.y.powi(2)).sqrt()
+pub struct NewArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+impl Summary for NewArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {}({})", self.headline, self.author, self.location)
     }
 }
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+
