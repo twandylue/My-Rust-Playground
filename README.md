@@ -2,6 +2,6 @@
 
 my Rust playground
 
-# References
+## References
 
-- [ Rust Tutorial ](https://www.rust-lang.org/learn)
+- [Rust Tutorial](https://www.rust-lang.org/learn)

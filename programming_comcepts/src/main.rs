@@ -1,28 +1,43 @@
+use std::fmt::Display;
+
 fn main() {
-    let rect = Rectangle::square(10);
-    let area = Rectangle::area(&rect, &rect);
+    let novel = String::from("Call me Andy. Some year ago...");
+    let test = String::from("test");
 
-    println!("{:#?}", rect);
-
-    println!("{}", rect.area(&rect));
-    println!("{}", area);
+    println!(
+        "{:#?}",
+        longest_with_an_announcement(novel.as_str(), test.as_str(), "String")
+    )
 }
 
-#[derive(Debug)]
-struct Rectangle {
-    width: u32,
-    height: u32,
+fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement: {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
 }
 
-impl Rectangle {
-    fn square (size: u32) -> Self {
-        Self {
-            width: size,
-            height: size,
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
         }
     }
 
-    fn area (&self, rect: &Rectangle) -> u32 {
-        rect.height * rect.width
+    &s[..]
+}
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
     }
 }
