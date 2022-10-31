@@ -1,6 +1,6 @@
 # My-Rust-Playground
 
-my Rust playground
+My Rust Playground
 
 ## References
 
