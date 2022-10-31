@@ -1,43 +1,10 @@
 fn main() {
-    let tweet = Tweet {
-        username: String::from("andy"),
-        content: String::from("test123"),
-        reply: false,
-        retweet: false,
-    };
-
-    println!("{:#?}", tweet.summarize())
-}
-
-pub trait Summary {
-    fn summarize(&self) -> String{
-        String::from("(Read more...)")
+    let r;
+    {
+        let x = 5;
+        r = &x;
+        println!("r: {}", r);
     }
-}
 
-pub struct NewArticle {
-    pub headline: String,
-    pub location: String,
-    pub author: String,
-    pub content: String,
+    // println!("r: {}", r);
 }
-
-impl Summary for NewArticle {
-    fn summarize(&self) -> String {
-        format!("{}, by {}({})", self.headline, self.author, self.location)
-    }
-}
-
-pub struct Tweet {
-    pub username: String,
-    pub content: String,
-    pub reply: bool,
-    pub retweet: bool,
-}
-
-impl Summary for Tweet {
-    fn summarize(&self) -> String {
-        format!("{}: {}", self.username, self.content)
-    }
-}
-
