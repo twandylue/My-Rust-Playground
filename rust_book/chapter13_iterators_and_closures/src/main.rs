@@ -1,31 +1,11 @@
-#[derive(Debug)]
-struct Rectangle {
-    width: u32,
-    height: u32,
-}
-
+use ::chapter13_iterators_and_closures::shoes_in_size;
+use ::chapter13_iterators_and_closures::Shoe;
 fn main() {
-    let mut list = [
-        Rectangle {
-            width: 10,
-            height: 1,
-        },
-        Rectangle {
-            width: 3,
-            height: 5,
-        },
-        Rectangle {
-            width: 7,
-            height: 12,
-        },
-    ];
+    let s = Shoe {
+        size: 10,
+        style: String::from("test"),
+    };
 
-    let mut sort_operations = vec![];
-    let value = String::from("by key called");
-
-    list.sort_by_key(|r| {
-        sort_operations.push(value);
-        r.width
-    });
-    println!("{:#?}", list);
+    let a = shoes_in_size(vec![s], 10);
+    println!("s: {:?}", a);
 }
