@@ -249,6 +249,7 @@ impl<'a, T> Iterator for IterMut<'a, T> {
         let tail = self.tail;
         self.tail = wrap_index(self.tail.wrapping_add(1), self.ring_buf.len());
         unsafe {
+            // NOTE: Should use GAT to resolve lifetime problem
             let ptr = self.ring_buf as *mut [T];
             let slice = &mut *ptr;
             slice.get_mut(tail)
