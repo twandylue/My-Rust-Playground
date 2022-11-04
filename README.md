@@ -1,7 +1,5 @@
 # My-Rust-Playground
 
-My Rust Playground
+Learning and trying some new ideas in Rust.  
 
-## References
-
-- [Rust Tutorial](https://www.rust-lang.org/learn)
+If the idea is clear enough, I will move it to the independent repository.

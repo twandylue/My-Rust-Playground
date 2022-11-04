@@ -1,4 +1,3 @@
-// ref: https://rust-algo.club/collections/deque/index.html
 use std::alloc::{alloc, dealloc, realloc};
 use std::mem;
 use std::{
