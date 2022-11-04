@@ -1,4 +1,4 @@
-use core::slice;
+use core::{fmt, slice};
 use std::alloc::{alloc, dealloc, realloc};
 use std::mem;
 use std::ops::{Index, IndexMut};
@@ -7,6 +7,7 @@ use std::{
     ptr,
 };
 
+#[derive(Debug)]
 struct RawVec<T> {
     ptr: *mut T,
     cap: usize,
@@ -62,11 +63,11 @@ impl<T> RawVec<T> {
     }
 
     pub unsafe fn as_slice(&self) -> &[T] {
-        unsafe { slice::from_raw_parts(self.ptr.cast(), self.cap()) }
+        slice::from_raw_parts(self.ptr.cast(), self.cap())
     }
 
     pub unsafe fn as_mut_slice(&self) -> &mut [T] {
-        unsafe { slice::from_raw_parts_mut(self.ptr.cast(), self.cap()) }
+        slice::from_raw_parts_mut(self.ptr.cast(), self.cap())
     }
 }
 
@@ -149,6 +150,7 @@ impl<T> Deque<T> {
         if self.is_empty() {
             return None;
         }
+
         let head = self.wrapping_sub(self.head, 1);
         unsafe { Some(&*self.ptr().add(head)) }
     }
@@ -183,6 +185,7 @@ impl<T> Deque<T> {
 
     pub fn push_back(&mut self, elem: T) {
         self.try_grow();
+
         let head = self.head;
         self.head = self.wrapping_add(self.head, 1);
         unsafe {
@@ -316,6 +319,12 @@ impl<T> IndexMut<usize> for Deque<T> {
 fn wrap_index(index: usize, size: usize) -> usize {
     debug_assert!(size.is_power_of_two());
     index & (size - 1)
+}
+
+impl<T: fmt::Debug> fmt::Debug for Deque<T> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_list().entries(self.iter()).finish()
+    }
 }
 
 #[cfg(test)]
