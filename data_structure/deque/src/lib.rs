@@ -7,6 +7,8 @@ use std::{
     ptr,
 };
 
+const DEFAULT_CAPACITY: usize = 1;
+
 #[derive(Debug)]
 struct RawVec<T> {
     ptr: *mut T,
@@ -37,7 +39,7 @@ impl<T> RawVec<T> {
             return;
         }
         if self.cap == 0 {
-            *self = Self::with_capacity(1);
+            *self = Self::with_capacity(DEFAULT_CAPACITY);
             return;
         }
 
@@ -91,7 +93,7 @@ impl<T> Deque<T> {
         Self {
             tail: 0,
             head: 0,
-            ring_buf: RawVec::with_capacity(10),
+            ring_buf: RawVec::with_capacity(DEFAULT_CAPACITY),
         }
     }
 
@@ -332,5 +334,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn deque_ok() {}
+    fn deque_ok() {
+        let mut deque = Deque::new();
+        deque.push_back(0);
+        deque.push_back(1);
+        assert_eq!(deque.pop_back().unwrap(), 1);
+        assert_eq!(deque.pop_back().unwrap(), 0);
+
+        deque.push_front(10);
+        deque.push_front(20);
+        assert_eq!(deque.pop_front().unwrap(), 20);
+        assert_eq!(deque.pop_front().unwrap(), 10);
+    }
 }
