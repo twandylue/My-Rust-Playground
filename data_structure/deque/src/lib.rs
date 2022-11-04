@@ -1,11 +1,10 @@
+// ref: https://rust-algo.club/collections/deque/index.html
 use std::alloc::{alloc, dealloc, realloc};
 use std::mem;
 use std::{
     alloc::{handle_alloc_error, Layout},
     ptr,
 };
-
-fn main() {}
 
 struct RawVec<T> {
     ptr: *mut T,
@@ -144,4 +143,12 @@ impl<T> Deque<T> {
 fn wrap_index(index: usize, size: usize) -> usize {
     debug_assert!(size.is_power_of_two());
     index & (size - 1)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn deque_ok() {}
 }
