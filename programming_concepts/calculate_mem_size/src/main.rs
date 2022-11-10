@@ -3,16 +3,18 @@ use std::{
     mem::{align_of, size_of},
 };
 
+struct struct0 {
+    func: Box<dyn Fn(&str) -> String>,
+}
+
 struct struct1 {
     func: Box<dyn Fn(&str) -> String>,
-    type1: u8,
-    type2: u32,
+    type1: u32,
 }
 
 struct struct2 {
     func: Box<dyn Fn(&str) -> String>,
     type1: u8,
-    type2: u8,
 }
 
 struct struct3<'a> {
@@ -20,10 +22,48 @@ struct struct3<'a> {
 }
 
 struct struct4 {
+    type1: String,
+}
+
+struct struct5 {
     type1: usize,
 }
 
 fn main() {
+    assert_eq!(size_of::<struct0>(), 16);
+    assert_eq!(align_of::<struct0>(), 8);
+
+    assert_eq!(size_of::<struct1>(), 24);
+    assert_eq!(align_of::<struct1>(), 8);
+
+    assert_eq!(size_of::<struct2>(), 24);
+    assert_eq!(align_of::<struct2>(), 8);
+
+    assert_eq!(size_of::<struct3>(), 16);
+    assert_eq!(align_of::<struct3>(), 8);
+
+    assert_eq!(size_of::<&str>(), 16);
+    assert_eq!(align_of::<&str>(), 8);
+
+    assert_eq!(size_of::<struct4>(), 24);
+    assert_eq!(align_of::<struct4>(), 8);
+
+    assert_eq!(size_of::<String>(), 24);
+    assert_eq!(align_of::<String>(), 8);
+
+    assert_eq!(size_of::<Vec<&str>>(), 24);
+    assert_eq!(align_of::<Vec<&str>>(), 8);
+
+    assert_eq!(size_of::<struct5>(), 8);
+    assert_eq!(align_of::<struct5>(), 8);
+
+    println!(
+        "type name: {}, memory size: {} bytes, memory alignment: {} bytes",
+        type_name::<struct0>(),
+        size_of::<struct0>(),
+        align_of::<struct0>(),
+    );
+
     println!(
         "type name: {}, memory size: {} bytes, memory alignment: {} bytes",
         type_name::<struct1>(),
@@ -47,9 +87,9 @@ fn main() {
 
     println!(
         "type name: {}, memory size: {} bytes, memory alignment: {} bytes",
-        type_name::<struct4>(),
-        size_of::<struct4>(),
-        align_of::<struct4>(),
+        type_name::<struct5>(),
+        size_of::<struct5>(),
+        align_of::<struct5>(),
     );
 
     println!(
