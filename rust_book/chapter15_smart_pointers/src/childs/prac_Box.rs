@@ -1,6 +1,8 @@
 use std::ops::Deref;
 
 pub fn run() {
+    let list = Cons(1, Box::new(Cons(2, Box::new(Nil))));
+
     let b = Box::new(5);
     println!("b: {}", b);
 
@@ -24,6 +26,13 @@ pub fn run() {
     drop(c);
     println!("CustomSmartPointer dropped before the end of main.");
 }
+
+enum List {
+    Cons(i32, Box<List>),
+    Nil,
+}
+
+use List::{Cons, Nil};
 
 struct MyBox<T>(T);
 

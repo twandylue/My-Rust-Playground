@@ -1,6 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 use List::{Cons, Nil};
 
+#[derive(Debug)]
 enum List {
     Cons(Rc<RefCell<i32>>, Rc<List>),
     Nil,
@@ -14,7 +15,11 @@ pub fn run() {
     let b = Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
     let c = Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
 
-    // TODO:
+    *value.borrow_mut() += 100;
+
+    println!("a after = {:?}", a);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
 }
 
 pub trait Messenger {
