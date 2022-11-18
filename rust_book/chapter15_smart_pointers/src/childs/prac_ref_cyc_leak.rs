@@ -34,6 +34,6 @@ pub fn run() {
     println!("b rc count after changing a = {}", Rc::strong_count(&b));
     println!("a rc count after changing b = {}", Rc::strong_count(&a));
 
-    // WARNING: cycle link
+    // WARNING: cycle link, and this will cause stake overflow
     // println!("a next item = {:?}", a.tail());
 }
