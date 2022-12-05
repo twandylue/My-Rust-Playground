@@ -20,7 +20,7 @@ fn main() {
 }
 ```
 
-2 (TODO:)
+2
 
 ```rust
 fn main() {
@@ -30,8 +30,7 @@ fn main() {
 
     // Modify '8' to make it work
     // TIPS: slice( reference ) IS NOT an array, if it is an array, then `assert!` will passed: Each of the two chars '中' and '国'  occupies 4 bytes, 2 * 4 = 8
-    println!("{:?}", slice);
-    println!("{}", std::mem::size_of_val(&'人'));
+    println!("{}", std::mem::size_of::<usize>()); // 8
     assert!(std::mem::size_of_val(&slice) == 16);
 
     println!("Success!");
