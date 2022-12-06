@@ -1,5 +1,12 @@
 use std::fmt::Display;
 
+type NodeRef<T> = Option<Box<TreeNode<T>>>;
+
+enum Action<T, U> {
+    Call(T),
+    Handler(U),
+}
+
 #[derive(Debug, Clone)]
 struct TreeNode<T> {
     val: T,
@@ -8,7 +15,8 @@ struct TreeNode<T> {
 }
 
 fn main() {
-    let tree = self::generate_tree_recu(5, &mut 0);
+    // let tree = self::generate_tree_recu(3, &mut 0);
+    let tree = self::generate_tree_nonrecu(3);
     print_tree_recu(&tree, 0);
     println!("--------------------------------------");
     let inv_tree = self::invert_tree_recu(tree);
@@ -54,9 +62,34 @@ fn print_tree_recu<T: Display>(root: &Option<Box<TreeNode<T>>>, level: usize) {
     }
 }
 
-// TODO:
-fn generate_tree_nonrecu<T>() -> TreeNode<T> {
-    todo!();
+fn generate_tree_nonrecu(level: usize) -> NodeRef<i32> {
+    let mut counter = 1;
+    let mut arg_stack = Vec::<Action<usize, i32>>::new();
+    let mut ret_stack = Vec::<NodeRef<i32>>::new();
+
+    arg_stack.push(Action::Call(level));
+
+    while let Some(action) = arg_stack.pop() {
+        match action {
+            Action::Call(level) => {
+                if level > 0 {
+                    arg_stack.push(Action::Handler(counter));
+                    counter += 1;
+                    arg_stack.push(Action::Call(level - 1)); // left
+                    arg_stack.push(Action::Call(level - 1)); // right
+                } else {
+                    ret_stack.push(None);
+                }
+            }
+            Action::Handler(val) => {
+                let right = ret_stack.pop().unwrap();
+                let left = ret_stack.pop().unwrap();
+                ret_stack.push(Some(Box::new(TreeNode { val, left, right })))
+            }
+        }
+    }
+
+    return ret_stack.pop().unwrap();
 }
 
 fn invert_tree_nonrecu<T>() -> Option<Box<TreeNode<T>>> {
