@@ -15,12 +15,11 @@ struct TreeNode<T> {
 }
 
 fn main() {
-    // let tree = self::generate_tree_recu(3, &mut 0);
     let tree = self::generate_tree_nonrecu(3);
-    print_tree_recu(&tree, 0);
+    print_tree_nonrecu(&tree);
     println!("--------------------------------------");
     let inv_tree = self::invert_tree_recu(tree);
-    print_tree_recu(&inv_tree, 0);
+    print_tree_nonrecu(&inv_tree);
 }
 
 fn invert_tree_recu<T>(root: Option<Box<TreeNode<T>>>) -> Option<Box<TreeNode<T>>> {
@@ -35,6 +34,7 @@ fn invert_tree_recu<T>(root: Option<Box<TreeNode<T>>>) -> Option<Box<TreeNode<T>
     }
 }
 
+#[allow(dead_code)]
 fn generate_tree_recu(level: usize, counter: &mut i32) -> Option<Box<TreeNode<i32>>> {
     if level == 0 {
         return None;
@@ -51,6 +51,7 @@ fn generate_tree_recu(level: usize, counter: &mut i32) -> Option<Box<TreeNode<i3
     Some(node)
 }
 
+#[allow(dead_code)]
 fn print_tree_recu<T: Display>(root: &Option<Box<TreeNode<T>>>, level: usize) {
     if let Some(node) = root {
         self::print_tree_recu(&node.right, level + 1);
@@ -75,8 +76,8 @@ fn generate_tree_nonrecu(level: usize) -> NodeRef<i32> {
                 if level > 0 {
                     arg_stack.push(Action::Handler(counter));
                     counter += 1;
-                    arg_stack.push(Action::Call(level - 1)); // left
                     arg_stack.push(Action::Call(level - 1)); // right
+                    arg_stack.push(Action::Call(level - 1)); // left
                 } else {
                     ret_stack.push(None);
                 }
@@ -96,6 +97,25 @@ fn invert_tree_nonrecu<T>() -> Option<Box<TreeNode<T>>> {
     todo!();
 }
 
-fn print_tree_nonrecu() {
-    todo!();
+fn print_tree_nonrecu<T: Display>(root: &Option<Box<TreeNode<T>>>) {
+    let mut stack = Vec::<Action<(&NodeRef<T>, usize), (&T, usize)>>::new();
+    stack.push(Action::Call((&root, 0)));
+
+    while let Some(action) = stack.pop() {
+        match action {
+            Action::Call((root, level)) => {
+                if let Some(node) = root {
+                    stack.push(Action::Call((&node.left, level + 1)));
+                    stack.push(Action::Handler((&node.val, level)));
+                    stack.push(Action::Call((&node.right, level + 1)));
+                }
+            }
+            Action::Handler((val, level)) => {
+                for _ in 0..level {
+                    print!("  ");
+                }
+                println!("{}", val);
+            }
+        }
+    }
 }
