@@ -18,10 +18,11 @@ fn main() {
     let tree = self::generate_tree_nonrecu(3);
     print_tree_nonrecu(&tree);
     println!("--------------------------------------");
-    let inv_tree = self::invert_tree_recu(tree);
+    let inv_tree = invert_tree_nonrecu(&tree);
     print_tree_nonrecu(&inv_tree);
 }
 
+#[allow(dead_code)]
 fn invert_tree_recu<T>(root: Option<Box<TreeNode<T>>>) -> Option<Box<TreeNode<T>>> {
     if let Some(node) = root {
         return Some(Box::new(TreeNode {
@@ -93,8 +94,35 @@ fn generate_tree_nonrecu(level: usize) -> NodeRef<i32> {
     return ret_stack.pop().unwrap();
 }
 
-fn invert_tree_nonrecu<T>() -> Option<Box<TreeNode<T>>> {
-    todo!();
+fn invert_tree_nonrecu<T: Clone>(root: &NodeRef<T>) -> NodeRef<T> {
+    let mut arg_stack = Vec::<Action<&NodeRef<T>, &T>>::new();
+    let mut ret_stack = Vec::<NodeRef<T>>::new();
+
+    arg_stack.push(Action::Call(root));
+    while let Some(action) = arg_stack.pop() {
+        match action {
+            Action::Call(node) => {
+                if let Some(n) = node {
+                    arg_stack.push(Action::Handler(&n.val));
+                    arg_stack.push(Action::Call(&n.right));
+                    arg_stack.push(Action::Call(&n.left));
+                } else {
+                    ret_stack.push(None);
+                }
+            }
+            Action::Handler(val) => {
+                let right = ret_stack.pop().unwrap();
+                let left = ret_stack.pop().unwrap();
+                ret_stack.push(Some(Box::new(TreeNode {
+                    val: val.clone(),
+                    left: right,
+                    right: left,
+                })))
+            }
+        }
+    }
+
+    ret_stack.pop().unwrap()
 }
 
 fn print_tree_nonrecu<T: Display>(root: &Option<Box<TreeNode<T>>>) {

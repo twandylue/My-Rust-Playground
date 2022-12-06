@@ -5,7 +5,7 @@
 - [x] invert_tree_recu: invert binary tree in recursion way.
 - [x] generate_tree_nonrecu: generate binary tree without recursion way.
 - [x] print_tree_nonrecu: print binary tree without recursion way.
-- [ ] invert_tree_nonrecu: invert binary tree without recursion way.
+- [x] invert_tree_nonrecu: invert binary tree without recursion way.
 
 ## References
 
