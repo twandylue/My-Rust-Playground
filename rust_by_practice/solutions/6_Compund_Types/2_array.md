@@ -1,4 +1,4 @@
-# 6.2.array
+# 6.2.Array
 
 ## Questions
 

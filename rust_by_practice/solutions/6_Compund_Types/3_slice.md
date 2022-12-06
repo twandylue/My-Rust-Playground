@@ -1,4 +1,4 @@
-# 6.3.slice
+# 6.3.Slice
 
 ## Questions
 
