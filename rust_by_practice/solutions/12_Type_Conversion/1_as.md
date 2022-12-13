@@ -39,7 +39,7 @@ fn main() {
     //
     let v = 1000 as u8;
 
-    println!("{}", v); // 232 TODO: WHY???
+    println!("{}", v); // 232
 
     println!("Success!");
 }
@@ -102,8 +102,6 @@ fn main() {
 ```
 
 5
-
-TODO:
 
 ```rust
 fn main() {
