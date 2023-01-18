@@ -1,5 +1,5 @@
-mutation CartCreate {
-  cartCreate {
+mutation CartCreate($input: CartInput) {
+  cartCreate(input: $input) {
     cart {
         id
         checkoutUrl
