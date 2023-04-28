@@ -1,3 +1,6 @@
+/// Singleton
+/// ref:
+/// 1. https://refactoring.guru/design-patterns/singleton/rust/example#example-2
 use std::sync::Mutex;
 
 static ARRAY: Mutex<Vec<i32>> = Mutex::new(Vec::new());
