@@ -1,3 +1,6 @@
+// Mediator
+// ref:
+// 1. https://refactoring.guru/design-patterns/mediator/rust/example
 use std::collections::HashMap;
 use std::collections::VecDeque;
 
