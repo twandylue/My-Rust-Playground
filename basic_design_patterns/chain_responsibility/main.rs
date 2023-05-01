@@ -1,4 +1,4 @@
-// Chain of Responsiblity
+// Chain of Responsibility
 // ref:
 // 1. https://refactoring.guru/design-patterns/chain-of-responsibility/rust/example
 fn main() {

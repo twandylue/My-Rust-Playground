@@ -1,3 +1,6 @@
+// State pattern(trait object)
+// ref:
+// 1. https://refactoring.guru/design-patterns/state/rust/example
 use cursive::{
     event::Key,
     view::Nameable,
