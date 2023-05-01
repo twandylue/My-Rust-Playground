@@ -1,5 +1,4 @@
 use cursive::{
-    default,
     view::Nameable,
     views::{Dialog, EditView},
     Cursive,
