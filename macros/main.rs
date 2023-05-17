@@ -21,6 +21,12 @@ macro_rules! mans {
 
 macro_rules! females {
     ($($x:expr),*) => {
+        // NOTE: Because there are several statements, it should expand to an expression with
+        // enclosing code block({ ... })
+        // > All syntax extensions in Rust must result in a complete, supported syntax element (such as an expression, item, etc.).
+        // ref:
+        // 1. https://veykril.github.io/tlborm/decl-macros/patterns/push-down-acc.html
+        // 2. https://stackoverflow.com/questions/75524693/rust-macro-expansion-ignores-token-and-any-following
         {
             let mut temp = Human::Female(0);
             $(
@@ -28,7 +34,8 @@ macro_rules! females {
                     *num += $x
                 }
              )*
-             temp
+
+            temp
         }
     }
 }
