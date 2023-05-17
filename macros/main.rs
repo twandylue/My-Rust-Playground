@@ -4,19 +4,45 @@ macro_rules! literal {
     };
 }
 
-// TODO:
-// macro_rules! add_fun{
-//     ($name:ident)  => {
-//         add()
-//     }
-// }
+macro_rules! mans {
+    ($($x:expr),*) => {
+        {
+            let mut temp = Human::Man(0);
+            $(
+                if let Human::Man(ref mut num) = temp {
+                    *num += $x;
+                }
+            )*
 
-fn main() {
-    println!("Hello");
-    println!("{}", stringify!(1 + 2 + f()));
-    println!("{}", literal!(andy));
+            temp
+        }
+    };
 }
 
-fn add(num1: i32, num2: i32) -> i32 {
-    num1 + num2
+macro_rules! females {
+    ($($x:expr),*) => {
+        {
+            let mut temp = Human::Female(0);
+            $(
+                if let Human::Female(ref mut num) = temp {
+                    *num += $x
+                }
+             )*
+             temp
+        }
+    }
+}
+
+fn main() {
+    println!("{}", stringify!(1 + 2 + f()));
+
+    println!("{name}", name = literal!(andy));
+    println!("{temp:?}", temp = mans!(1, 2, 3));
+    println!("{temp:?}", temp = females!(1, 2, 3));
+}
+
+#[derive(Debug)]
+enum Human {
+    Man(i32),
+    Female(i32),
 }
