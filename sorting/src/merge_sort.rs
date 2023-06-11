@@ -1,68 +1,67 @@
-pub struct QuickSort {}
+struct MergedSort {}
 
-impl QuickSort {
-    pub fn sort_non_recursive(items: Vec<i32>) -> Vec<i32> {
-        todo!();
-    }
-
-    pub fn sort_recursive(items: Vec<i32>) -> Vec<i32> {
+impl MergedSort {
+    fn sort_recursive(items: Vec<i32>) -> Vec<i32> {
         if items.is_empty() {
             return items;
         }
-
-        let mut output = items.clone();
-        Self::quick_sort_helper(0, output.len() - 1, &mut output);
+        let output = Self::sort_helper(&items[..]).to_vec();
 
         return output;
     }
 
-    // pivot is the last item.
-    fn quick_sort_helper(left: usize, right: usize, items: &mut Vec<i32>) {
-        if left < right && right < items.len() {
-            let pivot: usize = right;
-            println!("original items: {items:?}");
-            println!("left: {left}");
-            println!("pivot: {pivot}");
-            println!("right: {right}");
-
-            let new_pivot = Self::partition(left, pivot - 1, pivot, items);
-            println!("new pivot: {new_pivot}");
-            println!("new items: {items:?}");
-            println!("--------");
-
-            if new_pivot > 0 {
-                Self::quick_sort_helper(left, new_pivot - 1, items);
+    fn sort_helper(items: &[i32]) -> Vec<i32> {
+        if items.len() == 2 {
+            if items[0] > items[1] {
+                return vec![items[1], items[0]];
+            } else {
+                return items.to_vec();
             }
-
-            Self::quick_sort_helper(new_pivot + 1, right, items);
+        } else if items.len() == 1 {
+            return items.to_vec();
         }
+
+        let mid = items.len() / 2;
+        let left = Self::sort_helper(&items[..mid]);
+        let right = Self::sort_helper(&items[mid..]);
+
+        return Self::merge(&left[..], &right[..]);
     }
 
-    fn partition(mut left: usize, mut right: usize, pivot: usize, items: &mut Vec<i32>) -> usize {
-        while left <= right && right < items.len() && right > 0 {
-            if items[left] <= items[pivot] {
-                left += 1;
-            } else if items[left] > items[pivot] && items[right] > items[pivot] {
-                right -= 1;
-            } else if items[left] > items[pivot] && items[right] <= items[pivot] {
-                Self::swap(left, right, items);
-                left += 1;
-                right -= 1;
+    fn merge(nums1: &[i32], nums2: &[i32]) -> Vec<i32> {
+        let mut m = nums1.len();
+        let mut n = nums2.len();
+        let mut index = m + n - 1;
+        let mut nums = vec![0; m + n];
+
+        while m > 0 && n > 0 {
+            if nums1[m - 1] > nums2[n - 1] {
+                nums[index] = nums1[m - 1];
+                m -= 1;
+            } else {
+                nums[index] = nums2[n - 1];
+                n -= 1;
+            }
+            if index > 0 {
+                index -= 1;
             }
         }
 
-        if items[left] > items[pivot] {
-            Self::swap(left, pivot, items);
-            return left;
+        while m > 0 || n > 0 {
+            if m > 0 {
+                nums[index] = nums1[m - 1];
+                m -= 1;
+            } else if n > 0 {
+                nums[index] = nums2[n - 1];
+                n -= 1;
+            }
+
+            if index > 0 {
+                index -= 1;
+            }
         }
 
-        return pivot;
-    }
-
-    fn swap(l: usize, r: usize, items: &mut Vec<i32>) {
-        let temp = items[l];
-        items[l] = items[r];
-        items[r] = temp;
+        return nums;
     }
 }
 
@@ -71,137 +70,137 @@ mod tests {
     use super::*;
 
     #[test]
-    fn quick_sort_recursive_case_1() {
+    fn merged_sort_recursive_case_1() {
         // arrange
         let input = Vec::from([4, 3, 2, 1]);
         let expected = vec![1, 2, 3, 4];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_2() {
+    fn merged_sort_recursive_case_2() {
         // arrange
         let input = Vec::from([1, 2, 3, 4]);
         let expected = vec![1, 2, 3, 4];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_3() {
+    fn merged_sort_recursive_case_3() {
         // arrange
         let input = Vec::from([1, 4, 2, 3]);
         let expected = vec![1, 2, 3, 4];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_4() {
+    fn merged_sort_recursive_case_4() {
         // arrange
         let input = Vec::from([1, 3, 2, 4]);
         let expected = vec![1, 2, 3, 4];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_5() {
+    fn merged_sort_recursive_case_5() {
         // arrange
         let input = Vec::from([1, 3, 2, 2, 4]);
         let expected = vec![1, 2, 2, 3, 4];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_6() {
+    fn merged_sort_recursive_case_6() {
         // arrange
         let input = Vec::<i32>::new();
         let expected: Vec<i32> = vec![];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_7() {
+    fn merged_sort_recursive_case_7() {
         // arrange
         let input = Vec::from([0, 0, 0, 0]);
         let expected = vec![0, 0, 0, 0];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_8() {
+    fn merged_sort_recursive_case_8() {
         // arrange
         let input = Vec::from([1, 3, 2]);
         let expected = vec![1, 2, 3];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_9() {
+    fn merged_sort_recursive_case_9() {
         // arrange
         let input = Vec::from([5, 1, 1, 2, 0, 0]);
         let expected = vec![0, 0, 1, 1, 2, 5];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_10() {
+    fn merged_sort_recursive_case_10() {
         // arrange
         let input = Vec::from([5, 2, 3, 1]);
         let expected = vec![1, 2, 3, 5];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
     }
 
     #[test]
-    fn quick_sort_recursive_case_11() {
+    fn merged_sort_recursive_case_11() {
         // arrange
         let input = Vec::from([
             -74, 48, -20, 2, 10, -84, -5, -9, 11, -24, -91, 2, -71, 64, 63, 80, 28, -30, -58, -11,
@@ -219,7 +218,7 @@ mod tests {
         ];
 
         // act
-        let actual = QuickSort::sort_recursive(input);
+        let actual = MergedSort::sort_recursive(input);
 
         // assert
         assert_eq!(expected, actual);
