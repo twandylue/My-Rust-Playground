@@ -34,11 +34,11 @@ impl<Chars: Iterator<Item = char>> Iterator for Lexer<Chars> {
             }
         }
 
-        if let Some(char) = self.chars.next() {
+        if let Some(n) = self.chars.next() {
             let mut text = String::new();
-            text.push(char);
+            text.push(n);
 
-            match char {
+            match n {
                 '(' => Some(Token {
                     kind: TokenKind::OpenPare,
                     text,
@@ -56,8 +56,8 @@ impl<Chars: Iterator<Item = char>> Iterator for Lexer<Chars> {
                     text,
                 }),
                 _ => {
-                    while let Some(w) = self.chars.next_if(|w| w.is_alphabetic()) {
-                        text.push(w)
+                    while let Some(n) = self.chars.next_if(|x| x.is_alphabetic()) {
+                        text.push(n);
                     }
 
                     Some(Token {
