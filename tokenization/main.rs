@@ -1,10 +1,40 @@
+use std::fs::File;
+use std::io::BufReader;
+use std::io::Read;
+use std::io::Write;
 use std::iter::Peekable;
 
 fn main() {
-    let lexer = Lexer::from_iter("f(   a   ) { test = abc }".chars());
+    println!("1) Tokenize a string in the program.");
+    println!("2) Tokenize a string in the file.");
+    print!("Enter a number: ");
+    std::io::stdout().flush().unwrap();
+    let mut input = String::new();
+    std::io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read line");
 
-    for token in lexer {
-        println!("{token:?}");
+    match input.trim().parse::<i32>() {
+        Ok(1) => {
+            let lexer = Lexer::from_iter("f(   a   ) { test = abc }".chars());
+            for token in lexer {
+                println!("{token:?}");
+            }
+        }
+        Ok(2) => {
+            let file = File::open("input.test").unwrap();
+            let buf_reader = BufReader::new(file);
+            let lexer = Lexer::from_iter(Reader {
+                content: buf_reader,
+            });
+            for token in lexer {
+                println!("{token:?}");
+            }
+        }
+        _ => {
+            println!("Invalid input");
+            return;
+        }
     }
 }
 
@@ -16,6 +46,29 @@ impl<Chars: Iterator<Item = char>> Lexer<Chars> {
     fn from_iter(chars: Chars) -> Self {
         Self {
             chars: chars.peekable(),
+        }
+    }
+}
+
+#[derive(Debug)]
+struct Reader {
+    content: BufReader<File>,
+}
+
+impl Iterator for Reader {
+    type Item = char;
+
+    fn next(&mut self) -> Option<char> {
+        let mut buffer: [u8; 1] = [0; 1];
+        match self.content.read_exact(&mut buffer) {
+            Ok(_) => {
+                if buffer[0] == 0 {
+                    return None;
+                }
+
+                return buffer.iter().map(|&x| x as char).next();
+            }
+            _ => return None,
         }
     }
 }
