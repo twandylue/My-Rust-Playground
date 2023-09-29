@@ -62,6 +62,7 @@ impl Iterator for Reader {
         let mut buffer: [u8; 1] = [0; 1];
         match self.content.read_exact(&mut buffer) {
             Ok(_) => {
+                // NOTE: EOF
                 if buffer[0] == 0 {
                     return None;
                 }
